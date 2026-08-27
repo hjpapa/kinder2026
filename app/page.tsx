@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CalendarDays, Check, ClipboardCheck, FileHeart, MessageSquareText, PencilLine, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, CalendarDays, Check, ClipboardCheck, FileHeart, MessageSquareText, PencilLine, ReceiptText, ShieldCheck, Sparkles } from "lucide-react";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -29,13 +29,24 @@ const tools = [
   {
     href: "/event-report",
     eyebrow: "결과 보고",
-    title: "계획과 실제를 근거 있게 비교",
-    description: "계획서와 실제 운영 메모를 비교해 결과, 유아 반응, 다음 개선점을 정리합니다.",
+    title: "결과 메모를 보고서 한 장으로",
+    description: "실제 운영 메모만으로 활동 내용, 유아 반응, 잘된 점과 사진 공간을 갖춘 결과보고를 만듭니다.",
     button: "결과 보고 정리하기",
     icon: ClipboardCheck,
     tone: "bg-[var(--rose-soft)] text-[#8c4d3a]",
     number: "03",
     tilt: "lg:-rotate-[0.25deg]",
+  },
+  {
+    href: "/finance",
+    eyebrow: "행정 문서",
+    title: "품의부터 영수증 정산까지",
+    description: "짧은 구매 메모로 예상 품의서를 만들고, 영수증 사진을 읽어 간단한 정산서 표로 정리합니다.",
+    button: "품의·정산 준비하기",
+    icon: ReceiptText,
+    tone: "bg-[var(--sky-soft)] text-[#356773]",
+    number: "04",
+    tilt: "lg:translate-y-3 lg:rotate-[0.2deg]",
   },
 ];
 
@@ -76,11 +87,11 @@ export default function HomePage() {
             <div><p className="text-xs font-black tracking-[0.12em] text-[var(--sage)]">누리에게 맡길 일</p><h2 className="brand-type mt-2 text-2xl font-black md:text-3xl">오늘은 어떤 문서를 준비할까요?</h2></div>
             <span className="hidden text-sm text-[var(--muted)] md:block">한 번에 하나씩, 선생님의 속도로</span>
           </div>
-          <div className="mt-7 grid gap-5 lg:grid-cols-3 lg:gap-6">
+          <div className="mt-7 grid gap-5 md:grid-cols-2 lg:gap-6">
             {tools.map((tool) => {
               const Icon = tool.icon;
               return (
-                <article key={tool.href} className={`paper-card group flex min-h-[365px] flex-col rounded-[1.8rem_2.1rem_1.7rem_2rem] p-7 transition hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(53,72,63,0.13)] ${tool.tilt}`}>
+                <article key={tool.href} className={`paper-card group flex min-h-[335px] flex-col rounded-[1.8rem_2.1rem_1.7rem_2rem] p-7 transition hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(53,72,63,0.13)] ${tool.tilt}`}>
                   <div className="flex items-start justify-between gap-4"><div className={`grid size-14 place-items-center rounded-[1.1rem_1.3rem_1rem_1.25rem] ${tool.tone}`} aria-hidden="true"><Icon size={27} /></div><span className="brand-type text-2xl font-black text-[#bec7c0]">{tool.number}</span></div>
                   <p className="mt-7 text-sm font-extrabold tracking-[0.08em] text-[var(--sage)]">{tool.eyebrow}</p>
                   <h2 className="mt-3 text-2xl font-black leading-snug tracking-[-0.025em]">{tool.title}</h2>

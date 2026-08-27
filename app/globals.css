@@ -219,16 +219,53 @@ a {
 }
 
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm;
+  }
+
   body {
     background: white;
+  }
+
+  body * {
+    visibility: hidden;
   }
 
   .no-print {
     display: none !important;
   }
 
+  .print-document-host {
+    position: static !important;
+  }
+
   .print-only {
-    display: block;
+    display: block !important;
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    visibility: visible;
+  }
+
+  .print-only * {
+    visibility: visible;
+  }
+
+  .print-only [class*="overflow-x-auto"] {
+    overflow: visible !important;
+  }
+
+  .print-only table {
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed;
+    font-size: 8.5pt;
+  }
+
+  .print-only th,
+  .print-only td {
+    overflow-wrap: anywhere;
   }
 
   .print-only h1 {

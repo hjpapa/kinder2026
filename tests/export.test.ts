@@ -11,13 +11,15 @@ describe("문서 내보내기", () => {
     expect(markdown).toContain("택배로 보내요");
   });
 
-  it("계획과 실제를 분리하고 입력하지 않은 예산을 확인 필요로 둔다", () => {
+  it("계획 비교 없이 실제 결과와 사진 공간을 갖춘 보고서를 만든다", () => {
     const plan = sectionsToMarkdown(demoEventPlanResult.documentTitle, eventPlanSections(demoEventPlanResult));
     const report = sectionsToMarkdown(demoEventReportResult.documentTitle, eventReportSections(demoEventReportResult));
     expect(plan).toContain("담당자 확인 필요");
-    expect(report).toContain("| 항목 | 계획 | 실제 |");
-    expect(report).toContain("계획 금액");
-    expect(report).toContain("확인 필요");
+    expect(report).toContain("| 항목 | 내용 |");
+    expect(report).toContain("## 주요 활동 내용");
+    expect(report).toContain("[사진 1 자리] 행사 전경");
+    expect(report).not.toContain("계획과 실제 운영의 차이");
+    expect(report).not.toContain("계획 금액");
   });
 
   it("유효한 DOCX ZIP 파일을 만든다", async () => {

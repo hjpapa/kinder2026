@@ -54,6 +54,13 @@ export async function handleGeneration<TInput, TResult>(request: NextRequest, op
   } catch (error) {
     const status = typeof error === "object" && error && "status" in error ? Number((error as { status?: number }).status) : 500;
     const code = error instanceof Error ? error.message : "GENERATION_FAILED";
+    console.error("[generation-error]", {
+      kind: options.kind,
+      name: error instanceof Error ? error.name : "UnknownError",
+      message: code,
+      status,
+      providerCode: typeof error === "object" && error && "code" in error ? String((error as { code?: unknown }).code || "") : "",
+    });
     const message = code === "OPENAI_API_KEY_MISSING"
       ? "서버의 AI 설정을 확인해 주세요."
       : status === 429

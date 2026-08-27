@@ -10,6 +10,8 @@ const allowedBackupKeys = new Set([
   "event-plan-drafts", "event-plan-autosave",
   "event-report-drafts", "event-report-autosave", "event-report-transfer",
   "parent-notice-drafts", "parent-notice-autosave", "parent-notice-transfer",
+  "finance-approval-drafts", "finance-approval-autosave",
+  "finance-settlement-drafts", "finance-settlement-autosave", "finance-transfer",
 ]);
 
 export type InstitutionTemplate = {

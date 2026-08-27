@@ -21,7 +21,7 @@ export const styleContextSchema = z.object({
 export const observationInputSchema = z.object({
   age: z.enum(["만 3세", "만 4세", "만 5세"]),
   observationDate: z.string().max(20),
-  playName: z.string().trim().min(1).max(120),
+  playName: z.string().trim().max(120),
   place: shortText,
   childrenCount: shortText.default(""),
   memo: z.string().trim().min(10).max(6_000),
@@ -43,9 +43,9 @@ export const budgetItemInputSchema = z.object({
 }).strict();
 
 export const eventPlanInputSchema = z.object({
-  eventName: z.string().trim().min(1).max(150),
-  eventType: z.string().trim().min(1).max(80),
-  target: z.string().trim().min(1).max(200),
+  eventName: z.string().trim().max(150),
+  eventType: z.string().trim().max(80),
+  target: z.string().trim().max(200),
   plannedDate: z.string().max(20),
   plannedTime: z.string().max(80),
   place: shortText,
@@ -73,7 +73,7 @@ export const eventPlanInputSchema = z.object({
 }).strict();
 
 export const eventReportInputSchema = z.object({
-  eventName: z.string().trim().min(1).max(150),
+  eventName: z.string().trim().max(150),
   target: shortText,
   planSource: longText,
   planObjectives: mediumText,
@@ -202,7 +202,7 @@ export const eventPlanResultSchema = z.object({
   guidelineReferences: z.array(outputText),
 }).strict();
 
-export const eventReportResultSchema = z.object({
+export const legacyEventReportResultSchema = z.object({
   documentTitle: outputText,
   overview: z.object({
     eventName: outputText,
@@ -249,8 +249,44 @@ export const eventReportResultSchema = z.object({
   guidelineReferences: z.array(outputText),
 }).strict();
 
+export const eventReportResultSchema = z.object({
+  documentTitle: outputText,
+  overview: z.object({
+    eventName: outputText,
+    dateTime: outputText,
+    place: outputText,
+    target: outputText,
+    participants: outputText,
+    personInCharge: outputText,
+  }).strict(),
+  implementationSummary: outputText,
+  activities: z.array(z.object({
+    activity: outputText,
+    details: outputText,
+  }).strict()).min(1).max(12),
+  childResponses: z.array(z.object({
+    observedFact: outputText,
+    possibleMeaning: outputText,
+    confirmationRequired: z.boolean(),
+  }).strict()).min(1).max(12),
+  safetyAndIncidents: z.array(outputText).min(1).max(12),
+  strengths: z.array(z.object({
+    point: outputText,
+    evidence: outputText,
+  }).strict()).min(1).max(10),
+  issuesAndImprovements: z.array(z.object({
+    area: outputText,
+    issue: outputText,
+    improvement: outputText,
+  }).strict()).min(1).max(10),
+  followUpActions: z.array(outputText).min(1).max(12),
+  attachmentChecklist: z.array(outputText).min(1).max(12),
+  reviewFlags: z.array(planReviewFlagSchema),
+  guidelineReferences: z.array(outputText),
+}).strict();
+
 export const parentNoticeInputSchema = z.object({
-  eventName: z.string().trim().min(1).max(150),
+  eventName: z.string().trim().max(150),
   eventSummary: z.string().trim().min(10).max(8_000),
   audience: z.string().max(200),
   tone: z.enum(["따뜻하게", "담백하게", "공식적으로"]),
@@ -269,6 +305,68 @@ export const parentNoticeResultSchema = z.object({
   guidelineReferences: z.array(outputText),
 }).strict();
 
+export const approvalInputSchema = z.object({
+  subject: z.string().trim().min(2).max(150),
+  memo: z.string().trim().min(10).max(6_000),
+  plannedDate: z.string().max(20),
+  budgetCategory: z.string().max(120),
+  items: z.array(budgetItemInputSchema).max(30),
+  notes: z.string().max(2_000),
+  styleContext: styleContextSchema,
+}).strict();
+
+export const approvalResultSchema = z.object({
+  documentTitle: outputText,
+  purpose: outputText,
+  purchaseSummary: outputText,
+  suggestedItems: z.array(z.object({
+    item: outputText,
+    quantity: z.number().nonnegative().nullable(),
+    unitPrice: z.number().nonnegative().max(1_000_000_000).nullable(),
+    budgetCategory: z.string(),
+    vendor: z.string(),
+    note: z.string(),
+    confirmationRequired: z.boolean(),
+  }).strict()).max(30),
+  expectedEffects: z.array(outputText).min(1).max(8),
+  confirmationChecklist: z.array(outputText).min(1).max(12),
+  reviewFlags: z.array(planReviewFlagSchema),
+  guidelineReferences: z.array(outputText),
+}).strict();
+
+export const settlementContextSchema = z.object({
+  subject: z.string().trim().min(2).max(150),
+  purpose: z.string().max(2_000),
+  budgetCategory: z.string().max(120),
+  notes: z.string().max(2_000),
+  privacyConfirmed: z.literal(true),
+}).strict();
+
+const receiptItemSchema = z.object({
+  description: outputText,
+  quantity: z.number().nonnegative().max(1_000_000).nullable(),
+  unitPrice: z.number().nonnegative().max(1_000_000_000).nullable(),
+  printedAmount: z.number().min(-1_000_000_000).max(1_000_000_000).nullable(),
+  confidence: z.enum(["high", "medium", "low"]),
+  needsReview: z.boolean(),
+}).strict();
+
+export const receiptExtractionResultSchema = z.object({
+  receipts: z.array(z.object({
+    sourceIndex: z.number().int().min(1).max(5),
+    merchant: outputText.nullable(),
+    purchaseDate: outputText.nullable(),
+    items: z.array(receiptItemSchema).min(1).max(30),
+    printedTotal: z.number().nonnegative().max(1_000_000_000).nullable(),
+    warnings: z.array(outputText).max(12),
+  }).strict()).min(1).max(5),
+  reviewFlags: z.array(z.object({
+    sourceIndex: z.number().int().min(1).max(5),
+    field: outputText,
+    reason: outputText,
+  }).strict()).max(30),
+}).strict();
+
 export const playSupportImageInputSchema = z.object({
   playName: z.string().trim().min(1).max(120),
   prompt: z.string().trim().min(10).max(2_000),
@@ -284,5 +382,10 @@ export type EventPlanInput = z.infer<typeof eventPlanInputSchema>;
 export type EventPlanResult = z.infer<typeof eventPlanResultSchema>;
 export type EventReportInput = z.infer<typeof eventReportInputSchema>;
 export type EventReportResult = z.infer<typeof eventReportResultSchema>;
+export type LegacyEventReportResult = z.infer<typeof legacyEventReportResultSchema>;
 export type ParentNoticeInput = z.infer<typeof parentNoticeInputSchema>;
 export type ParentNoticeResult = z.infer<typeof parentNoticeResultSchema>;
+export type ApprovalInput = z.infer<typeof approvalInputSchema>;
+export type ApprovalResult = z.infer<typeof approvalResultSchema>;
+export type SettlementContext = z.infer<typeof settlementContextSchema>;
+export type ReceiptExtractionResult = z.infer<typeof receiptExtractionResultSchema>;

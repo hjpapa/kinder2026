@@ -1,4 +1,4 @@
-import type { EventPlanResult, EventReportResult, ObservationResult, ParentNoticeResult } from "@/lib/schemas";
+import type { ApprovalResult, EventPlanResult, EventReportResult, ObservationResult, ParentNoticeResult, ReceiptExtractionResult } from "@/lib/schemas";
 
 export const demoObservationResult: ObservationResult = {
   title: "가을 택배소 놀이 기록",
@@ -63,19 +63,18 @@ export const demoEventReportResult: EventReportResult = {
   documentTitle: "가을 전통놀이 한마당 결과 보고서",
   overview: {
     eventName: "가을 전통놀이 한마당",
-    plannedDateTime: "추가 정보 필요",
-    actualDateTime: "추가 정보 필요",
-    plannedPlace: "강당과 바깥놀이터",
-    actualPlace: "우천으로 강당",
+    dateTime: "2026-09-18 10:00~11:40",
+    place: "유치원 강당",
     target: "만 3~5세 유아",
-    plannedParticipants: "추가 정보 필요",
-    actualParticipants: "추가 정보 필요",
+    participants: "유아 57명, 교직원 8명",
     personInCharge: "담당자 확인 필요",
   },
   implementationSummary: "우천으로 실외 활동을 실내 순환 방식으로 변경해 제기차기, 투호, 비석치기를 운영했다. 실제 운영 시간과 참여 인원은 추가 확인이 필요하다.",
-  objectiveResults: [{ objective: "여러 전통놀이 방법을 탐색한다.", evidence: "일부 유아가 투호 활동에 다시 참여하고 친구에게 던지는 위치를 설명했다.", interpretation: "반복 참여와 또래 설명이 관찰되었으나 전체 유아의 반응으로 일반화하지 않는다.", confirmationRequired: true }],
+  activities: [
+    { activity: "전통놀이 순환 활동", details: "강당에서 제기차기, 투호, 비석치기를 연령별로 순환 운영했다." },
+    { activity: "교실 연계", details: "관심이 이어진 투호 도구를 교실 놀이 영역에 제공하기로 했다." },
+  ],
   childResponses: [{ observedFact: "일부 유아가 투호 활동에 다시 참여했다.", possibleMeaning: "해당 활동에 관심을 보였을 가능성이 있으나 추가 관찰이 필요하다.", confirmationRequired: true }],
-  changes: [{ planned: "강당과 바깥놀이터에서 4개 활동 운영", actual: "강당에서 3개 활동을 순환 운영", reason: "우천", nextAction: "실내 전환 시 활동 간 소음과 대기 공간을 미리 구분한다." }],
   safetyAndIncidents: ["입력된 안전사고 정보 없음", "기관 기록과 추가 대조 필요"],
   strengths: [{ point: "우천 상황에 맞게 실내 순환 방식으로 전환", evidence: "실제 장소를 강당으로 변경하고 활동 수를 조정함" }],
   issuesAndImprovements: [{ area: "공간", issue: "실내 활동 간 소음과 대기 공간이 겹침", improvement: "다음 행사에서는 대기 구역과 이동 방향을 표지로 구분한다." }],
@@ -83,6 +82,34 @@ export const demoEventReportResult: EventReportResult = {
   attachmentChecklist: ["행사 사진", "참여 인원 확인자료", "예산 증빙자료", "안전 점검 자료"],
   reviewFlags: [{ field: "실제 참여 인원", reason: "구체적인 인원이 입력되지 않았습니다.", requiredAction: "참여 인원 확인자료와 대조해 입력해 주세요." }],
   guidelineReferences: [],
+};
+
+export const demoApprovalResult: ApprovalResult = {
+  documentTitle: "전통놀이 행사 준비물 구매 품의서 초안",
+  purpose: "유아 전통놀이 행사 운영에 필요한 소모품을 사전에 준비하고자 합니다.",
+  purchaseSummary: "활동 구역 표시용 테이프와 꾸미기 재료를 구매할 예정입니다. 단가와 예산 과목은 결재 전 확인이 필요합니다.",
+  suggestedItems: [
+    { item: "활동 구역 표시 테이프", quantity: 5, unitPrice: 3000, budgetCategory: "", vendor: "", note: "행사 동선 표시", confirmationRequired: true },
+    { item: "꾸미기 재료", quantity: null, unitPrice: null, budgetCategory: "", vendor: "", note: "수량과 단가 확인 필요", confirmationRequired: true },
+  ],
+  expectedEffects: ["행사 활동 구역과 이동 동선을 분명하게 표시할 수 있습니다."],
+  confirmationChecklist: ["예산 과목 확인", "수량과 단가 확인", "구매처 확인", "기관 결재 양식 대조"],
+  reviewFlags: [{ field: "예산 과목", reason: "입력된 예산 과목이 없습니다.", requiredAction: "기관 예산 담당자와 과목을 확인해 주세요." }],
+  guidelineReferences: [],
+};
+
+export const demoReceiptExtractionResult: ReceiptExtractionResult = {
+  receipts: [{
+    sourceIndex: 1,
+    merchant: "누리문구",
+    purchaseDate: "2026-09-17",
+    items: [
+      { description: "표시 테이프", quantity: 5, unitPrice: 3000, printedAmount: 15000, confidence: "high", needsReview: false },
+    ],
+    printedTotal: 15000,
+    warnings: [],
+  }],
+  reviewFlags: [],
 };
 
 export const demoParentNoticeResult: ParentNoticeResult = {
