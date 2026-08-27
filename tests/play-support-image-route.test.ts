@@ -8,7 +8,6 @@ const aiMocks = vi.hoisted(() => ({
   isDemoFallbackEnabled: vi.fn(() => true),
   isDemoMode: vi.fn(() => false),
 }));
-const accessMocks = vi.hoisted(() => ({ hasRequestAccess: vi.fn(() => true) }));
 const rateLimitMocks = vi.hoisted(() => ({
   checkRateLimit: vi.fn(() => ({ allowed: true, retryAfter: 0 })),
 }));
@@ -19,7 +18,6 @@ vi.mock("@/lib/ai/client", () => ({
   isDemoFallbackEnabled: aiMocks.isDemoFallbackEnabled,
   isDemoMode: aiMocks.isDemoMode,
 }));
-vi.mock("@/lib/server/access", () => ({ hasRequestAccess: accessMocks.hasRequestAccess }));
 vi.mock("@/lib/server/rate-limit", () => ({ checkRateLimit: rateLimitMocks.checkRateLimit }));
 
 import { POST } from "@/app/api/generate/play-support-image/route";
@@ -45,7 +43,6 @@ describe("놀이 지원 이미지 라우트", () => {
     aiMocks.generate.mockResolvedValue({ data: [{ b64_json: "dGVzdA==" }] });
     aiMocks.isDemoMode.mockReturnValue(false);
     aiMocks.isDemoFallbackEnabled.mockReturnValue(true);
-    accessMocks.hasRequestAccess.mockReturnValue(true);
     rateLimitMocks.checkRateLimit.mockReturnValue({ allowed: true, retryAfter: 0 });
   });
 
@@ -72,16 +69,6 @@ describe("놀이 지원 이미지 라우트", () => {
 
     expect(response.status).toBe(429);
     expect(response.headers.get("retry-after")).toBe("37");
-    expect(aiMocks.getOpenAIClient).not.toHaveBeenCalled();
-  });
-
-  it("인증 실패는 요청 본문과 AI 클라이언트를 처리하기 전에 거절한다", async () => {
-    accessMocks.hasRequestAccess.mockReturnValueOnce(false);
-
-    const response = await POST(imageRequest(validBody));
-
-    expect(response.status).toBe(401);
-    expect(rateLimitMocks.checkRateLimit).not.toHaveBeenCalled();
     expect(aiMocks.getOpenAIClient).not.toHaveBeenCalled();
   });
 

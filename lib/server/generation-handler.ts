@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import type { ZodType } from "zod";
 import { isDemoFallbackEnabled, isDemoMode } from "@/lib/ai/client";
-import { hasRequestAccess } from "@/lib/server/access";
 import { checkRateLimit } from "@/lib/server/rate-limit";
 
 type HandlerOptions<TInput, TResult> = {
@@ -13,9 +12,6 @@ type HandlerOptions<TInput, TResult> = {
 };
 
 export async function handleGeneration<TInput, TResult>(request: NextRequest, options: HandlerOptions<TInput, TResult>) {
-  if (!hasRequestAccess(request)) {
-    return NextResponse.json({ error: "접근 코드를 먼저 확인해 주세요.", code: "ACCESS_REQUIRED" }, { status: 401 });
-  }
   if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
     return NextResponse.json({ error: "JSON 형식으로 요청해 주세요.", code: "INVALID_CONTENT_TYPE" }, { status: 415 });
   }

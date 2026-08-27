@@ -1,7 +1,4 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { AccessGate } from "@/components/access-gate";
-import { ACCESS_COOKIE, hasAccessToken, isAccessRequired } from "@/lib/server/access";
 import "./globals.css";
 
 const metadataOrigin = process.env.NEXT_PUBLIC_APP_URL
@@ -29,13 +26,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const required = isAccessRequired();
-  const cookieStore = await cookies();
-  const authenticated = !required || hasAccessToken(cookieStore.get(ACCESS_COOKIE)?.value || "");
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <body><AccessGate initialState={{ required, authenticated }}>{children}</AccessGate></body>
+      <body>{children}</body>
     </html>
   );
 }

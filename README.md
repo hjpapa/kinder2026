@@ -6,7 +6,7 @@ AI는 입력한 사실만 구조화하도록 설계되어 있으며, 날짜·인
 
 ## 구현 범위
 
-- 1단계: 놀이 기록, 행사 계획, 결과 보고, 실제 OpenAI API, Structured Outputs, 샘플 모드, 편집·복사·Markdown·인쇄, 계획→결과 보고 연결, 선택형 접근 코드
+- 1단계: 놀이 기록, 행사 계획, 결과 보고, 실제 OpenAI API, Structured Outputs, 샘플 모드, 편집·복사·Markdown·인쇄, 계획→결과 보고 연결
 - 2단계: 기관 문체와 사용자 지정 항목, 기존 계획서 붙여넣기, 가정통신문, 여러 초안, JSON 백업·복원, 브라우저별 요청량 통계
 - 3단계: DOCX, 기관 양식 템플릿, 품의서·정산표, 놀이 지원자료 이미지, 기관 지침 파일 연계
 - 의도적 제외: 계정, 기관별 사용자 권한, 암호화된 서버 저장
@@ -34,7 +34,6 @@ npm run dev
 | `OPENAI_IMAGE_MODEL` | 놀이 지원자료 이미지 모델. 기본값 `gpt-image-2` |
 | `DEMO_MODE` | `true`이면 API 대신 샘플 결과만 사용 |
 | `DEMO_FALLBACK` | 실제 생성 실패 후 사용자가 샘플 결과를 선택할 수 있게 함 |
-| `APP_ACCESS_CODE` | 로컬 개발에서는 선택 사항. 프로덕션에서는 과금 API 보호를 위해 반드시 설정 |
 | `NEXT_PUBLIC_APP_URL` | 선택 항목. 메타데이터의 프로덕션 기준 URL |
 
 `.env.local`은 Git에서 제외됩니다. API 키를 브라우저 코드, GitHub 저장소, 문서 본문에 넣지 마세요.
@@ -60,7 +59,7 @@ npm run build
 
 ## 배포
 
-GitHub 저장소는 `hjpapa/kinder2026`이며 Vercel에서 Next.js 프로젝트로 연결합니다. 프로덕션 환경 변수에는 `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_IMAGE_MODEL`, `APP_ACCESS_CODE`를 모두 설정합니다. `APP_ACCESS_CODE`가 없으면 접근 게이트가 비활성화되므로 공개 배포에서는 생략하지 않습니다.
+GitHub 저장소는 `hjpapa/kinder2026`이며 Vercel에서 Next.js 프로젝트로 연결합니다. 프로덕션 환경 변수에는 `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_IMAGE_MODEL`을 설정합니다.
 
 배포 후 `/api/generate/*` 호출은 서버에서 실행되므로 OpenAI 키가 클라이언트 번들에 포함되지 않습니다.
 

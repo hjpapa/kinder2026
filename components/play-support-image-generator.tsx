@@ -26,7 +26,6 @@ function parseResponsePayload(raw: string): ImageResponsePayload {
 }
 
 function defaultErrorMessage(status: number) {
-  if (status === 401) return "접근 코드를 다시 확인해 주세요.";
   if (status === 429) return "이미지 생성 요청이 많습니다. 잠시 후 다시 시도해 주세요.";
   return "이미지를 만들지 못했습니다.";
 }

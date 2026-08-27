@@ -1,14 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getImageModel, getOpenAIClient, isDemoFallbackEnabled, isDemoMode } from "@/lib/ai/client";
 import { playSupportImageInputSchema } from "@/lib/schemas";
-import { hasRequestAccess } from "@/lib/server/access";
 import { checkRateLimit } from "@/lib/server/rate-limit";
 
 const piiPattern = /(?:\b(?:01[016789]|0\d{1,2})[- ]?\d{3,4}[- ]?\d{4}\b)|(?:[\w.+-]+@[\w-]+\.[\w.-]+)|(?:\b\d{6}[- ]?[1-4]\d{6}\b)|(?:(?:서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)[^\n,]{0,30}(?:로|길|동)\s?\d{1,4}(?:-\d{1,4})?)/i;
 const MAX_INPUT_BYTES = 10_000;
 
 export async function POST(request: NextRequest) {
-  if (!hasRequestAccess(request)) return NextResponse.json({ error: "접근 코드를 먼저 확인해 주세요." }, { status: 401 });
   if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
     return NextResponse.json({ error: "JSON 형식으로 요청해 주세요." }, { status: 415 });
   }
