@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { clearWorkroomStorage, createBackup, readStorage, restoreBackup, saveDraft, STORAGE_PREFIX, writeStorage } from "@/lib/client-storage";
+import { clearWorkroomStorage, createBackup, getSettings, readStorage, restoreBackup, saveDraft, STORAGE_PREFIX, writeStorage } from "@/lib/client-storage";
 
 describe("브라우저 저장과 JSON 백업", () => {
   beforeEach(() => localStorage.clear());
   afterEach(() => vi.restoreAllMocks());
 
-  it("준비실 접두사 안에서만 저장하고 백업·복원한다", () => {
+  it("앱 접두사 안에서만 저장하고 백업·복원한다", () => {
     writeStorage("observation-autosave", { value: "익명화된 초안" });
     localStorage.setItem("unrelated", "keep");
     const backup = createBackup();
@@ -15,13 +15,27 @@ describe("브라우저 저장과 JSON 백업", () => {
     expect(readStorage("observation-autosave", null)).toEqual({ value: "익명화된 초안" });
   });
 
-  it("준비실 백업이 아닌 JSON은 거부한다", () => {
-    expect(() => restoreBackup('{"hello":"world"}')).toThrow("준비실 백업 파일 형식");
+  it("도담비서 백업이 아닌 JSON은 거부한다", () => {
+    expect(() => restoreBackup('{"hello":"world"}')).toThrow("도담비서 백업 파일 형식");
   });
 
   it("지원하지 않는 저장 키를 포함한 백업은 거부한다", () => {
     const backup = JSON.stringify({ format: "teacher-ai-workroom-backup", version: 1, data: { "teacher-ai-workroom:v1:unknown": {} } });
     expect(() => restoreBackup(backup)).toThrow("지원하지 않는 백업 항목");
+  });
+
+  it("기존 기본 양식 이름을 누리 브랜드로 안전하게 옮긴다", () => {
+    writeStorage("settings", {
+      institutionTone: "차분하게",
+      institutionNameDisplay: "기관명 직접 입력",
+      autoSave: true,
+      customDocumentTitle: "",
+      customSections: [],
+      selectedTemplateId: "default",
+      templates: [{ id: "default", name: "기본 준비실 양식", tone: "차분하게", documentTitle: "", sectionHeadings: [] }],
+      guidelines: [],
+    });
+    expect(getSettings().templates[0].name).toBe("누리 기본 양식");
   });
 
   it("저장소 속성 접근이 거부되어도 안전한 실패 값을 반환한다", () => {

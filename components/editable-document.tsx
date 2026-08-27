@@ -46,7 +46,7 @@ export function EditableDocument({ title, sections, mode, prefix, initialDocumen
 
   if (!active) return null;
   return (
-    <section className="rounded-[2rem] border border-[var(--line)] bg-[var(--paper)] p-5 shadow-[0_18px_50px_rgba(53,72,63,0.08)] md:p-7">
+    <section className="paper-card rounded-[1.8rem_2.05rem_1.7rem_1.95rem] p-5 pt-7 md:p-7 md:pt-9">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2">
@@ -69,7 +69,7 @@ export function EditableDocument({ title, sections, mode, prefix, initialDocumen
           <label htmlFor={`editable-${active.id}`} className="font-black">{active.title}</label>
           <button type="button" onClick={() => copy(active.content)} className="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-bold text-[var(--sage-dark)] hover:bg-[var(--sage-soft)]"><Clipboard size={17} aria-hidden="true" /> 항목 복사</button>
         </div>
-        <textarea id={`editable-${active.id}`} value={active.content} onChange={(event) => updateSections(edited.map((section) => section.id === active.id ? { ...section, content: event.target.value } : section))} className="mt-2 min-h-[28rem] w-full resize-y rounded-2xl border border-[#b8c8be] bg-white p-5 font-mono text-sm leading-7" />
+        <textarea id={`editable-${active.id}`} value={active.content} onChange={(event) => updateSections(edited.map((section) => section.id === active.id ? { ...section, content: event.target.value } : section))} className="mt-2 min-h-[28rem] w-full resize-y rounded-[1rem_1.1rem_0.95rem_1.05rem] border border-[#b8c8be] bg-[rgba(255,255,252,0.94)] p-5 text-sm leading-7" />
       </div>
 
       <div className="no-print mt-5 flex flex-wrap gap-2">

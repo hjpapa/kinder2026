@@ -53,7 +53,7 @@ export const defaultSettings: AppSettings = {
   customDocumentTitle: "",
   customSections: [],
   selectedTemplateId: "default",
-  templates: [{ id: "default", name: "기본 준비실 양식", tone: "따뜻하고 간결한 공문형 문체", documentTitle: "", sectionHeadings: [] }],
+  templates: [{ id: "default", name: "누리 기본 양식", tone: "따뜻하고 간결한 공문형 문체", documentTitle: "", sectionHeadings: [] }],
   guidelines: [],
 };
 
@@ -119,7 +119,7 @@ function normalizeSettings(value: unknown): AppSettings {
     if (!isRecord(item) || typeof item.id !== "string" || typeof item.name !== "string") return [];
     return [{
       id: item.id.slice(0, 120),
-      name: item.name.slice(0, 120),
+      name: item.id === "default" && item.name === "기본 준비실 양식" ? "누리 기본 양식" : item.name.slice(0, 120),
       tone: stringValue(item.tone, "", 300),
       documentTitle: stringValue(item.documentTitle, "", 120),
       sectionHeadings: stringList(item.sectionHeadings, 8, 80),
@@ -207,7 +207,7 @@ export function restoreBackup(raw: string) {
   if (raw.length > MAX_BACKUP_BYTES) throw new Error("백업 파일이 너무 큽니다.");
   const parsed = JSON.parse(raw) as { format?: string; version?: number; data?: Record<string, unknown> };
   if (parsed.format !== "teacher-ai-workroom-backup" || parsed.version !== 1 || !isRecord(parsed.data)) {
-    throw new Error("준비실 백업 파일 형식이 아닙니다.");
+    throw new Error("도담비서 백업 파일 형식이 아닙니다.");
   }
   const updates: Array<[string, string]> = [];
   for (const [key, value] of Object.entries(parsed.data)) {

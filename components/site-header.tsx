@@ -1,24 +1,23 @@
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
+import { BrandMark } from "@/components/brand-mark";
 
 export function SiteHeader() {
   return (
-    <header className="border-b border-[var(--line)] bg-[rgba(255,253,248,0.92)] backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
-        <Link href="/" className="flex min-h-11 items-center gap-3 rounded-xl">
-          <span className="grid size-10 place-items-center rounded-xl bg-[var(--sage)] text-white" aria-hidden="true">
-            <Sparkles size={21} strokeWidth={2.2} />
-          </span>
+    <header className="sticky top-0 z-40 border-b border-[rgba(49,86,66,0.12)] bg-[rgba(255,253,246,0.9)] backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3.5 md:px-8">
+        <Link href="/" className="flex min-h-12 items-center gap-3 rounded-xl">
+          <BrandMark />
           <span>
-            <strong className="block text-lg leading-tight">교사의 AI 준비실</strong>
-            <span className="hidden text-sm text-[var(--muted)] sm:block">놀이 기록부터 행사 계획·결과 보고까지</span>
+            <strong className="brand-type block text-[1.08rem] leading-tight sm:text-xl">도담비서 <span className="text-[var(--rose)]">:</span> 누리</strong>
+            <span className="hidden text-xs font-medium text-[var(--muted)] sm:block">교사의 생각을 문서로 잇는 AI 업무 도우미</span>
           </span>
         </Link>
         <Link
           href="/settings"
-          className="inline-flex min-h-11 items-center rounded-xl border border-[var(--line)] bg-white px-4 text-sm font-semibold hover:border-[var(--sage)]"
+          className="action-button min-h-11 bg-[var(--paper)] px-3.5"
         >
-          설정
+          <SlidersHorizontal size={17} aria-hidden="true" /> <span className="hidden sm:inline">내 기관</span> 설정
         </Link>
       </div>
     </header>

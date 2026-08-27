@@ -10,21 +10,21 @@ const metadataOrigin = process.env.NEXT_PUBLIC_APP_URL
 export const metadata: Metadata = {
   metadataBase: new URL(metadataOrigin),
   title: {
-    default: "교사의 AI 준비실",
-    template: "%s | 교사의 AI 준비실",
+    default: "도담비서 : 누리",
+    template: "%s | 도담비서 : 누리",
   },
-  description: "놀이 기록부터 행사 계획·결과 보고까지, AI가 초안을 만들고 교사가 확인하는 유치원 교사 업무 도구",
+  description: "교사의 생각을 놀이 기록, 행사 계획과 결과 보고 문서로 잇는 유치원 교사용 AI 업무 도우미",
   openGraph: {
-    title: "교사의 AI 준비실",
-    description: "놀이 기록부터 행사 계획·결과 보고까지",
+    title: "도담비서 : 누리",
+    description: "교사의 생각을 문서로 잇는 AI 업무 도우미",
     type: "website",
     locale: "ko_KR",
-    images: [{ url: "/og.png", width: 1735, height: 906, alt: "교사의 AI 준비실" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "도담비서 : 누리" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "교사의 AI 준비실",
-    description: "놀이 기록부터 행사 계획·결과 보고까지",
+    title: "도담비서 : 누리",
+    description: "교사의 생각을 문서로 잇는 AI 업무 도우미",
     images: ["/og.png"],
   },
 };
